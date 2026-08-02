@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>
+Watch Video - My Modern Video
+</title>
+
+
+<link rel="stylesheet" href="style.css">
+
+
+</head>
+
+
+<body>
+
+
+
+<header class="header">
+
+
+<div class="logo">
+
+🎬 My Modern Video
+
+</div>
+
+
+
+<nav>
+
+<a href="index.html">
+Home
+</a>
+
+
+<a href="videos.html">
+Videos
+</a>
+
+
+<a href="about.html">
+About
+</a>
+
+
+<a href="contact.html">
+Contact
+</a>
+
+
+<a href="social-media.html">
+Social
+</a>
+
+</nav>
+
+
+</header>
+
+
+
+
+
+
+
+<section class="hero">
+
+
+<div class="hero-content">
+
+
+<h1 id="videoTitle">
+
+Watch Video
+
+</h1>
+
+
+<p>
+
+Enjoy HD quality experience
+
+</p>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<section class="container">
+
+
+<div class="card">
+
+
+
+<div class="video-player">
+
+
+<iframe
+
+id="videoPlayer"
+
+allowfullscreen>
+
+</iframe>
+
+
+</div>
+
+
+
+
+
+
+
+<h2 id="title">
+
+</h2>
+
+
+
+
+
+<p id="description">
+
+</p>
+
+
+
+
+
+<p id="creator">
+
+</p>
+
+
+
+
+
+<p id="views">
+
+</p>
+
+
+
+
+
+<p id="likes">
+
+</p>
+
+
+
+
+
+<p id="rating">
+
+</p>
+
+
+
+
+
+<p id="uploadDate">
+
+</p>
+
+
+
+
+
+
+
+
+<div id="premium">
+
+</div>
+
+
+
+
+
+
+<div id="tags" class="tags">
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="video-buttons">
+
+
+
+<button onclick="increaseLike(currentVideo.id)">
+
+❤️ Like
+
+</button>
+
+
+
+
+
+<button onclick="addFavorite(currentVideo.id)">
+
+⭐ Favorite
+
+</button>
+
+
+
+
+
+<button onclick="downloadVideo(currentVideo.id)">
+
+⬇ Download
+
+</button>
+
+
+
+
+
+<button onclick="shareVideo(currentVideo.title)">
+
+🔗 Share
+
+</button>
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<section class="container">
+
+
+<div class="card">
+
+
+<h2>
+
+🔥 Related Videos
+
+</h2>
+
+
+
+<div
+
+class="video-grid"
+
+id="relatedVideos">
+
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+<footer>
+
+
+<p>
+
+© 2026 My Modern Video. All Rights Reserved.
+
+</p>
+
+
+</footer>
+
+
+
+
+
+
+<script src="app.js"></script>
+
+
+<script src="videos.js"></script>
+
+<script>
+
+
+// =================================
+// LOAD VIDEO DATA
+// =================================
+
+
+const params =
+
+new URLSearchParams(
+
+window.location.search
+
+);
+
+
+
+const videoId =
+
+Number(
+
+params.get("id")
+
+);
+
+
+
+
+
+const currentVideo =
+
+getVideoById(videoId);
+
+
+
+
+
+
+
+
+
+if(currentVideo){
+
+
+
+// Save Watch History
+
+saveWatchHistory(
+currentVideo.id
+);
+
+
+
+
+
+
+document.getElementById(
+
+"videoTitle"
+
+).innerHTML =
+
+currentVideo.title;
+
+
+
+
+
+
+
+document.getElementById(
+
+"title"
+
+).innerHTML =
+
+currentVideo.title;
+
+
+
+
+
+
+
+document.getElementById(
+
+"description"
+
+).innerHTML =
+
+"📝 " + currentVideo.description;
+
+
+
+
+
+
+
+document.getElementById(
+
+"creator"
+
+).innerHTML =
+
+"👤 Creator: "
+
++
+
+currentVideo.creator;
+
+
+
+
+
+
+
+document.getElementById(
+
+"views"
+
+).innerHTML =
+
+"👁 Views: "
+
++
+
+currentVideo.views;
+
+
+
+
+
+
+
+document.getElementById(
+
+"likes"
+
+).innerHTML =
+
+"❤️ Likes: "
+
++
+
+currentVideo.likes;
+
+
+
+
+
+
+
+document.getElementById(
+
+"rating"
+
+).innerHTML =
+
+"⭐ Rating: "
+
++
+
+currentVideo.rating;
+
+
+
+
+
+
+
+document.getElementById(
+
+"uploadDate"
+
+).innerHTML =
+
+"📅 Upload Date: "
+
++
+
+currentVideo.uploadDate;
+
+
+
+
+
+
+
+
+
+document.getElementById(
+
+"videoPlayer"
+
+).src =
+
+currentVideo.videoLink;
+
+
+
+
+
+
+
+
+
+if(currentVideo.isPremium){
+
+
+
+document.getElementById(
+
+"premium"
+
+).innerHTML =
+
+
+`
+
+<span class="premium">
+
+⭐ PREMIUM CONTENT
+
+</span>
+
+`;
+
+
+
+}
+
+
+
+
+
+
+
+
+document.getElementById(
+
+"tags"
+
+).innerHTML =
+
+
+currentVideo.tags
+
+.map(
+
+tag=>"#"+tag
+
+)
+
+.join(" ");
+
+
+
+
+
+
+
+loadRelatedVideos(
+
+currentVideo.id
+
+);
+
+
+
+
+
+}
+
+else{
+
+
+
+document.querySelector(
+
+".card"
+
+).innerHTML =
+
+
+`
+
+<div class="empty-state">
+
+<h2>
+
+Video Not Found
+
+</h2>
+
+
+<p>
+
+This video is unavailable.
+
+</p>
+
+
+</div>
+
+`;
+
+
+
+}
+
+
+
+
+</script>
+
+<script>
+
+
+// =================================
+// DOWNLOAD CHECK
+// =================================
+
+
+function checkDownload(){
+
+
+
+if(!currentVideo){
+
+
+alert(
+"Video not available"
+);
+
+
+return false;
+
+
+}
+
+
+
+if(
+currentVideo.downloadLink === "#"
+){
+
+
+
+alert(
+"Download will be available soon."
+);
+
+
+
+return false;
+
+
+}
+
+
+
+return true;
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =================================
+// IMPROVED SHARE
+// =================================
+
+
+function shareCurrentVideo(){
+
+
+
+if(!currentVideo)
+
+return;
+
+
+
+
+
+const shareData = {
+
+
+title:
+
+currentVideo.title,
+
+
+text:
+
+"Watch this video on My Modern Video 🚀",
+
+
+url:
+
+window.location.href
+
+
+
+};
+
+
+
+
+
+if(
+navigator.share
+){
+
+
+
+navigator.share(shareData);
+
+
+
+}
+
+else{
+
+
+
+navigator.clipboard.writeText(
+
+window.location.href
+
+);
+
+
+
+showMessage(
+
+"Video link copied 🔗"
+
+);
+
+
+
+}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =================================
+// PAGE READY
+// =================================
+
+
+console.log(
+
+"Watch Page Ready 🎬"
+
+);
+
+
+
+</script>
+
+
+
+
+
+
+
+<div class="container">
+
+
+<div class="card text-center">
+
+
+<a href="videos.html" class="btn">
+
+⬅ Back To Videos
+
+</a>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<footer>
+
+
+<div class="footer-links">
+
+
+<a href="about.html">
+
+About
+
+</a>
+
+
+
+<a href="contact.html">
+
+Contact
+
+</a>
+
+
+
+<a href="privacy-policy.html">
+
+Privacy Policy
+
+</a>
+
+
+
+<a href="terms-and-conditions.html">
+
+Terms & Conditions
+
+</a>
+
+
+
+<a href="disclaimer.html">
+
+Disclaimer
+
+</a>
+
+
+
+<a href="cookie-policy.html">
+
+Cookie Policy
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+<p>
+
+© 2026 My Modern Video. All Rights Reserved.
+
+</p>
+
+
+
+</footer>
+
+
+
+
+
+
+
+</body>
+
+</html>

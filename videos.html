@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+<head>
+
+
+<meta charset="UTF-8">
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<title>
+
+Videos - My Modern Video
+
+</title>
+
+
+
+<link rel="stylesheet" href="style.css">
+
+
+</head>
+
+
+
+<body>
+
+
+
+
+
+<header class="header">
+
+
+<div class="logo">
+
+🎬 My Modern Video
+
+</div>
+
+
+
+
+<nav>
+
+
+<a href="index.html">
+
+Home
+
+</a>
+
+
+
+<a href="videos.html">
+
+Videos
+
+</a>
+
+
+
+<a href="about.html">
+
+About
+
+</a>
+
+
+
+<a href="contact.html">
+
+Contact
+
+</a>
+
+
+
+<a href="social-media.html">
+
+Social
+
+</a>
+
+
+
+</nav>
+
+
+</header>
+
+
+
+
+
+
+
+
+<section class="hero">
+
+
+<div class="hero-content">
+
+
+<h1>
+
+All Videos
+
+</h1>
+
+
+
+<p>
+
+Explore latest videos from different categories.
+
+</p>
+
+
+
+
+
+<div class="search-box">
+
+
+<input
+
+type="search"
+
+id="videoSearch"
+
+placeholder="Search videos..."
+
+>
+
+
+<button onclick="videoSearch()">
+
+🔍 Search
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<section class="container">
+
+
+<div class="card">
+
+
+<h2>
+
+📂 Categories
+
+</h2>
+
+
+
+<div
+
+id="categoryList"
+
+class="category-grid">
+
+
+</div>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<section class="container">
+
+
+<div class="card">
+
+
+<h2>
+
+⚡ Filter Videos
+
+</h2>
+
+
+
+
+
+<select id="sortVideos" onchange="sortVideos()">
+
+
+<option value="latest">
+
+Latest Videos
+
+</option>
+
+
+
+<option value="popular">
+
+Most Popular
+
+</option>
+
+
+
+<option value="rating">
+
+Highest Rating
+
+</option>
+
+
+
+</select>
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+
+<section class="container">
+
+
+<div
+
+class="video-grid"
+
+id="allVideos">
+
+
+</div>
+
+
+
+</section>
+
+<script>
+
+
+// =================================
+// SEARCH VIDEOS PAGE
+// =================================
+
+
+function videoSearch(){
+
+
+
+const keyword =
+
+document.getElementById(
+
+"videoSearch"
+
+).value;
+
+
+
+
+
+showSearchResults(keyword);
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =================================
+// SORT VIDEOS
+// =================================
+
+
+function sortVideos(){
+
+
+
+const type =
+
+document.getElementById(
+
+"sortVideos"
+
+).value;
+
+
+
+
+
+let result = [...videos];
+
+
+
+
+
+if(type==="latest"){
+
+
+
+result.sort(
+
+(a,b)=>
+
+new Date(b.uploadDate)
+
+-
+
+new Date(a.uploadDate)
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+else if(type==="popular"){
+
+
+
+result.sort(
+
+(a,b)=>
+
+Number(
+
+b.views.replace("K","000")
+
+)
+
+-
+
+Number(
+
+a.views.replace("K","000")
+
+)
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+else if(type==="rating"){
+
+
+
+result.sort(
+
+(a,b)=>
+
+parseFloat(b.rating)
+
+-
+
+parseFloat(a.rating)
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+
+const box =
+
+document.getElementById(
+
+"allVideos"
+
+);
+
+
+
+
+
+box.innerHTML="";
+
+
+
+
+
+result.forEach(video=>{
+
+
+
+box.innerHTML +=
+
+createVideoCard(video);
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =================================
+// CATEGORY BUTTONS
+// =================================
+
+
+function loadVideoCategories(){
+
+
+
+const box =
+
+document.getElementById(
+
+"categoryList"
+
+);
+
+
+
+
+
+if(!box)
+
+return;
+
+
+
+
+
+const categories = [
+
+"All",
+
+...new Set(
+
+videos.map(
+
+video=>video.category
+
+)
+
+)
+
+];
+
+
+
+
+
+box.innerHTML="";
+
+
+
+
+
+categories.forEach(category=>{
+
+
+
+box.innerHTML +=
+
+
+`
+
+<button
+
+onclick="showCategoryVideos('${category}')"
+
+>
+
+${category}
+
+</button>
+
+
+`;
+
+
+
+});
+
+
+
+}
+
+
+
+
+
+
+
+
+
+// =================================
+// INITIAL LOAD
+// =================================
+
+
+document.addEventListener(
+
+"DOMContentLoaded",
+
+()=>{
+
+
+loadAllVideos();
+
+
+loadVideoCategories();
+
+
+
+}
+
+);
+
+
+
+</script>
+
+
+
+
+
+<footer>
+
+
+<div class="footer-links">
+
+
+<a href="about.html">
+
+About
+
+</a>
+
+
+
+<a href="contact.html">
+
+Contact
+
+</a>
+
+
+
+<a href="privacy-policy.html">
+
+Privacy Policy
+
+</a>
+
+
+
+<a href="terms-and-conditions.html">
+
+Terms & Conditions
+
+</a>
+
+
+
+<a href="disclaimer.html">
+
+Disclaimer
+
+</a>
+
+
+
+<a href="cookie-policy.html">
+
+Cookie Policy
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="footer-social">
+
+
+<a href="#">
+
+▶ YouTube
+
+</a>
+
+
+
+<a href="#">
+
+📷 Instagram
+
+</a>
+
+
+
+<a href="#">
+
+𝕏 X
+
+</a>
+
+
+
+<a href="#">
+
+✈ Telegram
+
+</a>
+
+
+
+</div>
+
+
+
+
+
+
+
+<p>
+
+© 2026 My Modern Video. All Rights Reserved.
+
+</p>
+
+
+
+</footer>
+
+
+
+
+
+
+
+
+<script src="videos.js"></script>
+
+
+<script src="app.js"></script>
+
+
+
+
+
+
+</body>
+
+</html>
